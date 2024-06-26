@@ -4,7 +4,7 @@ import Pet from './Pet';
 
 const Results = ({ pets }) => {
   return (
-    <div>
+    <div className="search">
       {!pets.length ? (
         <h1>Tidak ada hewan peliharaan yang ditemukan</h1>
       ) : (
