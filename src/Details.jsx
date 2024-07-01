@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useContext, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { CircleLoader } from 'react-spinners';
 import { useQuery } from '@tanstack/react-query';
 
@@ -7,8 +7,11 @@ import fetchPet from './fetchPet';
 import Carousel from './Carousel';
 import ErrorBoundary from './ErrorBoundary';
 import Modal from './Modal';
+import AdoptedPetContext from './AdoptedPetContext';
 
 const Details = () => {
+  const navigate = useNavigate();
+  const [, setAdoptedPet] = useContext(AdoptedPetContext);
   const params = useParams();
   const results = useQuery(['details', params.id], fetchPet);
   // useQuery(1 = payload/options merupakan array => [a = label,b = id], 2 = function)
@@ -42,7 +45,14 @@ const Details = () => {
             <div>
               <h1>Apakah kamu ingin meng-adopsi {pet.name}?</h1>
               <div className="buttons">
-                <button>Yes</button>
+                <button
+                  onClick={() => {
+                    setAdoptedPet(pet);
+                    navigate('/');
+                  }}
+                >
+                  Yes
+                </button>
                 <button onClick={() => setShowModal(false)}>No</button>
               </div>
             </div>
