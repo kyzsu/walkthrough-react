@@ -1,17 +1,19 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CircleLoader } from 'react-spinners';
+import { useDispatch } from 'react-redux';
 import { useQuery } from '@tanstack/react-query';
 
+import Modal from './Modal';
 import fetchPet from './fetchPet';
 import Carousel from './Carousel';
 import ErrorBoundary from './ErrorBoundary';
-import Modal from './Modal';
-import AdoptedPetContext from './AdoptedPetContext';
+
+import { adopt } from './adoptedPetSlice';
 
 const Details = () => {
   const navigate = useNavigate();
-  const [, setAdoptedPet] = useContext(AdoptedPetContext);
+  const dispatch = useDispatch();
   const params = useParams();
   const results = useQuery(['details', params.id], fetchPet);
   // useQuery(1 = payload/options merupakan array => [a = label,b = id], 2 = function)
@@ -47,7 +49,7 @@ const Details = () => {
               <div className="buttons">
                 <button
                   onClick={() => {
-                    setAdoptedPet(pet);
+                    dispatch(adopt(pet));
                     navigate('/');
                   }}
                 >

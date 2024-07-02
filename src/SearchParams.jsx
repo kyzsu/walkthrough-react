@@ -1,18 +1,16 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useQuery } from '@tanstack/react-query';
 
 import Results from './Results';
 import fetchSearch from './fetchSearch';
 import useBreedList from './useBreedList';
-import AdoptedPetContext from './AdoptedPetContext';
 
 const ANIMALS = ['bird', 'cat', 'dog', 'rabbit', 'reptile'];
 
 const SearchParams = () => {
-  const [adoptedPet] = useContext(AdoptedPetContext);
-  // const [location, setLocation] = useState('Seattle, WA');
+  const adoptedPet = useSelector((state) => state.adoptedPet.value);
   const [animal, setAnimal] = useState('');
-  // const [breed, setBreed] = useState('');
   const [reqParams, setReqParams] = useState({
     location: '',
     animal: '',
@@ -21,28 +19,12 @@ const SearchParams = () => {
   const [breeds] = useBreedList(animal);
   const results = useQuery(['search', reqParams], fetchSearch);
   const pets = results?.data?.pets ?? [];
-  // const [pets, setPets] = useState([]);
-
-  // useEffect(() => {
-  //   fetchPets();
-  // }, []);
-
-  // async function fetchPets() {
-  //   const res = await fetch(
-  //     `http://pets-v2.dev-apis.com/pets?animal=${animal}&location=${location}&breed=${breed}`
-  //   );
-
-  //   const json = await res.json();
-
-  //   setPets(json.pets);
-  // }
 
   return (
     <div className="search-params">
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          // fetchPets();
           const formData = new FormData(e.target);
           const obj = {
             animal: formData.get('animal') ?? '',
