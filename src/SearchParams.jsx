@@ -1,23 +1,22 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { useQuery } from '@tanstack/react-query';
+import { useSelector, useDispatch } from 'react-redux';
 
 import Results from './Results';
 import fetchSearch from './fetchSearch';
 import useBreedList from './useBreedList';
 
+import { all } from './searchParamsSlice';
+
 const ANIMALS = ['bird', 'cat', 'dog', 'rabbit', 'reptile'];
 
 const SearchParams = () => {
+  const dispatch = useDispatch();
   const adoptedPet = useSelector((state) => state.adoptedPet.value);
+  const searchParams = useSelector((state) => state.searchParams.value);
   const [animal, setAnimal] = useState('');
-  const [reqParams, setReqParams] = useState({
-    location: '',
-    animal: '',
-    breed: '',
-  });
   const [breeds] = useBreedList(animal);
-  const results = useQuery(['search', reqParams], fetchSearch);
+  const results = useQuery(['search', searchParams], fetchSearch);
   const pets = results?.data?.pets ?? [];
 
   return (
@@ -31,7 +30,7 @@ const SearchParams = () => {
             location: formData.get('location') ?? '',
             breed: formData.get('breed') ?? '',
           };
-          setReqParams(obj);
+          dispatch(all(obj));
         }}
       >
         {adoptedPet ? (
@@ -47,8 +46,6 @@ const SearchParams = () => {
             placeholder="Location"
             type="text"
             name="location"
-            // value={location}
-            // onChange={(e) => setLocation(e.target.value)}
           />
         </label>
         {/* controlled form */}
@@ -56,7 +53,6 @@ const SearchParams = () => {
           Animal
           <select
             id="animal"
-            // value={animal}
             name="animal"
             onChange={(e) => {
               setAnimal(e.target.value);
