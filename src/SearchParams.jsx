@@ -10,9 +10,7 @@ const ANIMALS = ['bird', 'cat', 'dog', 'rabbit', 'reptile'];
 
 const SearchParams = () => {
   const [adoptedPet] = useContext(AdoptedPetContext);
-  // const [location, setLocation] = useState('Seattle, WA');
   const [animal, setAnimal] = useState('');
-  // const [breed, setBreed] = useState('');
   const [reqParams, setReqParams] = useState({
     location: '',
     animal: '',
@@ -21,28 +19,13 @@ const SearchParams = () => {
   const [breeds] = useBreedList(animal);
   const results = useQuery(['search', reqParams], fetchSearch);
   const pets = results?.data?.pets ?? [];
-  // const [pets, setPets] = useState([]);
-
-  // useEffect(() => {
-  //   fetchPets();
-  // }, []);
-
-  // async function fetchPets() {
-  //   const res = await fetch(
-  //     `http://pets-v2.dev-apis.com/pets?animal=${animal}&location=${location}&breed=${breed}`
-  //   );
-
-  //   const json = await res.json();
-
-  //   setPets(json.pets);
-  // }
 
   return (
-    <div className="search-params">
+    <div className="my-0 mx-auto w-11/12">
       <form
+        className="p-10 mb-10 rounded-lg bg-gray-200 shadow-lg flex flex-col justify-center items-center"
         onSubmit={(e) => {
           e.preventDefault();
-          // fetchPets();
           const formData = new FormData(e.target);
           const obj = {
             animal: formData.get('animal') ?? '',
@@ -65,8 +48,7 @@ const SearchParams = () => {
             placeholder="Location"
             type="text"
             name="location"
-            // value={location}
-            // onChange={(e) => setLocation(e.target.value)}
+            className="search-input"
           />
         </label>
         {/* controlled form */}

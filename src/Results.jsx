@@ -4,7 +4,10 @@ import Pet from './Pet';
 
 const Results = ({ pets }) => {
   return (
-    <div className="search">
+    <div
+      className="rounded-md shadow-lg w-[715px] p-4 float-left mb-6"
+      style={{ background: '#faeff0' }}
+    >
       {!pets.length ? (
         <h1>Tidak ada hewan peliharaan yang ditemukan</h1>
       ) : (
